@@ -14,6 +14,10 @@ COLOR_DEEP = 4
 COLOR_COUNT = 32
 COMPRESS = 0
 PX_PER_M = 0
+PARAMETER_RANGE = 629
+WHITE_COLOR_HEX = 16777215
+GRAPH_UP_LIM = 50
+GRAPH_LOW_LIM = -50
 
 
 def create_hat_block():
@@ -27,7 +31,7 @@ def create_info_block():
 
 def create_pointlist():
     pointlist = []
-    for t in range(0, 629):
+    for t in range(0, PARAMETER_RANGE):
         x = round(20 * (math.cos(t / 100) + math.cos(5 * t / 100) / 5))
         y = round(20 * (math.sin(t / 100) - math.sin(5 * t / 100) / 5))
         if [x, y] not in pointlist:
@@ -39,10 +43,10 @@ with open("picture.bmp", "wb") as f:
     f.write(create_hat_block())
     f.write(create_info_block())
     graph_pointlist = create_pointlist()
-    for y in range(-50, 51):
-        for x in range(-50, 51):
+    for y in range(GRAPH_LOW_LIM, GRAPH_UP_LIM):
+        for x in range(GRAPH_LOW_LIM, GRAPH_UP_LIM):
             cur_coords = [x, y]
             if cur_coords in graph_pointlist:
                 f.write(struct.pack('<i', 0))
             else:
-                f.write(struct.pack('<i', 16777215))
+                f.write(struct.pack('<i', WHITE_COLOR_HEX))
